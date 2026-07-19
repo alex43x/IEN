@@ -3,6 +3,7 @@ services:
   - type: web
     name: ien-backend
     runtime: docker
+    plan: free
     rootDir: back
     dockerfilePath: Dockerfile
     envVars:
@@ -27,6 +28,7 @@ services:
   - type: web
     name: ien-frontend
     runtime: static
+    plan: free
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist

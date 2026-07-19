@@ -24,17 +24,12 @@ services:
     autoDeploy: true
 
   # ─── Frontend (Static Site) ───────────────────────────────────────────────
-  - type: static_site
+  - type: static
     name: ien-frontend
     rootDir: frontend
-    runtime: static
-    buildCommand: npm ci && npm run build
-    staticPublishPath: dist
+    buildCommand: cd frontend && npm ci && npm run build
+    staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
         value: /api
-    routes:
-      - type: rewrite
-        source: /api/*
-        destination: https://ien-backend.onrender.com/api/*
     autoDeploy: true

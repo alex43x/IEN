@@ -21,15 +21,13 @@ services:
       - key: NODE_ENV
         value: production
     healthCheckPath: /health
-    autoDeploy: true
+    autoDeployTrigger: commit
 
   # ─── Frontend (Static Site) ───────────────────────────────────────────────
-  - type: static
+  - type: web
     name: ien-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
-    envVars:
-      - key: VITE_API_URL
-        value: /api
-    autoDeploy: true
+    autoDeployTrigger: commit

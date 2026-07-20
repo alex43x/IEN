@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import {
   Plus,
   Edit3,
-  Trash2,
+  PowerOff,
+  RotateCcw,
   Store,
   MapPin,
 } from "lucide-react";
@@ -13,6 +14,8 @@ import { useAuth } from "../context/AuthContext";
 export default function AdminStores() {
   const { user } = useAuth();
   const isGeneral = user?.rol === 'admin_general';
+  const isNegocio = user?.rol === 'admin_negocio';
+  const canManage = isGeneral || isNegocio;
   const [stores, setStores] = useState<Sucursal[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -21,7 +24,7 @@ export default function AdminStores() {
 
   const fetchStores = async () => {
     try {
-      const data = await adminService.listarSucursales();
+      const data = await adminService.listarSucursales(true);
       setStores(data);
     } catch (err) {
       console.error("Error fetching stores", err);
@@ -55,12 +58,21 @@ export default function AdminStores() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("¿Eliminar esta sucursal?")) return;
+    if (!confirm("¿Desactivar esta sucursal?")) return;
     try {
       await adminService.eliminarSucursal(id);
       await fetchStores();
-    } catch (err) {
-      console.error("Error deleting store", err);
+    } catch (err: any) {
+      alert(err.response?.data?.error || "Error al desactivar la sucursal");
+    }
+  };
+
+  const handleReactivar = async (id: string) => {
+    try {
+      await adminService.reactivarSucursal(id);
+      await fetchStores();
+    } catch (err: any) {
+      alert(err.response?.data?.error || "Error al reactivar la sucursal");
     }
   };
 
@@ -141,18 +153,27 @@ export default function AdminStores() {
                 <Store size={20} />
               </div>
               <div className="flex items-center gap-1">
-                {isGeneral && (
+                {canManage && (
                   <button onClick={() => handleEdit(store)} className="p-2 rounded-xl text-muted-foreground hover:bg-secondary transition-all">
                     <Edit3 size={14} />
                   </button>
                 )}
-                {isGeneral && (
+                {canManage && store.activo && (
                   <button onClick={() => handleDelete(store._id)} className="p-2 rounded-xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all">
-                    <Trash2 size={14} />
+                    <PowerOff size={14} />
+                  </button>
+                )}
+                {canManage && !store.activo && (
+                  <button onClick={() => handleReactivar(store._id)} className="p-2 rounded-xl text-muted-foreground hover:bg-emerald-500/10 hover:text-emerald-500 transition-all">
+                    <RotateCcw size={14} />
                   </button>
                 )}
               </div>
             </div>
+            <span className={`mt-3 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${store.activo ? 'bg-emerald-500/10 text-emerald-600' : 'bg-destructive/10 text-destructive'}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${store.activo ? 'bg-emerald-500' : 'bg-destructive'}`} />
+              {store.activo ? 'Activa' : 'Inactiva'}
+            </span>
             <h3 className="mt-4 font-semibold text-foreground">{store.nombre_tienda}</h3>
             <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin size={14} />

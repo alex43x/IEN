@@ -19,7 +19,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard, roles: ['admin_general', 'admin_negocio'] as string[] },
   { label: "Pacientes", path: "/admin/pacientes", icon: Users, roles: ['admin_general', 'admin_negocio'] as string[] },
   { label: "Reportes", path: "/admin/reportes", icon: BarChart3, roles: ['admin_general', 'admin_negocio'] as string[] },
-  { label: "Sucursales", path: "/admin/sucursales", icon: Store, roles: ['admin_general'] as string[] },
+  { label: "Sucursales", path: "/admin/sucursales", icon: Store, roles: ['admin_general', 'admin_negocio'] as string[] },
   { label: "Productos", path: "/admin/productos", icon: Package, roles: ['admin_general', 'admin_negocio', 'moderador_tienda'] as string[] },
   { label: "Códigos", path: "/admin/codigos", icon: QrCode, roles: ['admin_general', 'admin_negocio', 'moderador_tienda'] as string[] },
   { label: "Plantillas", path: "/admin/plantillas", icon: Mail, roles: ['admin_general'] as string[] },

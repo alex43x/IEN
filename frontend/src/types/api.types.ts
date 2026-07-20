@@ -220,6 +220,7 @@ export interface Sucursal {
   _id: string;
   nombre_tienda: string;
   ciudad: string;
+  activo: boolean;
 }
 
 export interface ProductoAdmin {

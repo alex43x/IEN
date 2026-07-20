@@ -113,8 +113,10 @@ export const adminService = {
     return response.data;
   },
 
-  listarSucursales: async () => {
-    const response = await api.get<Sucursal[]>('/admin/sucursales');
+  listarSucursales: async (incluirInactivas?: boolean) => {
+    const response = await api.get<Sucursal[]>('/admin/sucursales', {
+      params: incluirInactivas ? { incluir_inactivas: 'true' } : undefined,
+    });
     return response.data;
   },
 
@@ -130,6 +132,11 @@ export const adminService = {
 
   eliminarSucursal: async (id: string) => {
     const response = await api.delete<{ mensaje: string }>(`/admin/sucursales/${id}`);
+    return response.data;
+  },
+
+  reactivarSucursal: async (id: string) => {
+    const response = await api.patch<{ mensaje: string }>(`/admin/sucursales/${id}/reactivar`);
     return response.data;
   },
 

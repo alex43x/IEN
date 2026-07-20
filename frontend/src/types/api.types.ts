@@ -191,7 +191,6 @@ export interface PerfilPaciente {
   rol: string;
   fecha_registro: string;
   tienda: TiendaDocument | null;
-  producto: { _id: string; nombre: string; descripcion?: string } | null;
 }
 
 export interface ProgresoPaciente {

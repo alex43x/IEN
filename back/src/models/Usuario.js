@@ -14,4 +14,8 @@ const usuarioSchema = new Schema({
   fecha_registro: { type: Date, default: Date.now }
 });
 
+usuarioSchema.index({ rol: 1 });
+usuarioSchema.index({ tienda_id: 1 });
+usuarioSchema.index({ fecha_registro: 1 });
+
 module.exports = mongoose.model('Usuario', usuarioSchema, 'usuarios');

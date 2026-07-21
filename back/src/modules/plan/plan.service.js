@@ -310,11 +310,13 @@ exports.getTestInicial = async (usuarioId) => {
 exports.getToday = async (usuarioId) => {
   let plan = await PlanProgreso
     .findOne({ usuario_id: usuarioId, estado: 'activo' })
-    .select('dia_actual ultima_fecha_actividad progreso_diario');
+    .select('dia_actual ultima_fecha_actividad progreso_diario')
+    .lean();
   if (!plan) {
     plan = await PlanProgreso
       .findOne({ usuario_id: usuarioId, estado: 'completado' })
-      .select('dia_actual ultima_fecha_actividad progreso_diario');
+      .select('dia_actual ultima_fecha_actividad progreso_diario')
+      .lean();
     if (plan) {
       return {
         dia_actual: plan.dia_actual,
@@ -337,7 +339,7 @@ exports.getToday = async (usuarioId) => {
     };
   }
 
-  const contenido = await ContenidoDiario.findOne({ dia_numero: plan.dia_actual });
+  const contenido = await ContenidoDiario.findOne({ dia_numero: plan.dia_actual }).lean();
   if (!contenido) {
     throw new AppError(404, 'Contenido no disponible para este día');
   }
@@ -361,11 +363,13 @@ exports.getToday = async (usuarioId) => {
 exports.getProfile = async (usuarioId) => {
   let plan = await PlanProgreso
     .findOne({ usuario_id: usuarioId, estado: 'activo' })
-    .select('dia_actual racha_dias racha_maxima estado fecha_inicio ultima_fecha_actividad progreso_diario');
+    .select('dia_actual racha_dias racha_maxima estado fecha_inicio ultima_fecha_actividad progreso_diario')
+    .lean();
   if (!plan) {
     plan = await PlanProgreso
       .findOne({ usuario_id: usuarioId, estado: 'completado' })
-      .select('dia_actual racha_dias racha_maxima estado fecha_inicio ultima_fecha_actividad progreso_diario');
+      .select('dia_actual racha_dias racha_maxima estado fecha_inicio ultima_fecha_actividad progreso_diario')
+      .lean();
   }
   if (!plan) {
     throw new AppError(404, 'No hay un plan activo');
@@ -389,7 +393,8 @@ exports.getProfile = async (usuarioId) => {
 exports.completeDay = async (usuarioId, respuestaUsuario) => {
   const plan = await PlanProgreso
     .findOne({ usuario_id: usuarioId, estado: 'activo' })
-    .select('_id');
+    .select('_id')
+    .lean();
   if (!plan) {
     throw new AppError(404, 'No hay un plan activo');
   }
@@ -432,7 +437,8 @@ exports.completeDay = async (usuarioId, respuestaUsuario) => {
 exports.advanceDay = async (usuarioId) => {
   const plan = await PlanProgreso
     .findOne({ usuario_id: usuarioId, estado: 'activo' })
-    .select('_id');
+    .select('_id')
+    .lean();
   if (!plan) throw new AppError(404, 'No hay un plan activo');
 
   const { plan: planActualizado, hito_alcanzado } = await marcarDiaCompletado(plan._id, undefined, true);

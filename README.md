@@ -6,8 +6,8 @@ Plataforma IEN (Inteligencia Emocional).
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Frontend        │────▶│  Backend API    │────▶│  MongoDB Atlas  │
-│  (Static Site)   │     │  (Docker)       │     │  (Free 512MB)   │
+│  Frontend        │────▶│  Backend API    │────▶│  Northflank     │
+│  (Static Site)   │     │  (Docker)       │     │  Addon (MongoDB)│
 │  Northflank      │     │  Northflank     │     │                 │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
 ```
@@ -16,23 +16,16 @@ Plataforma IEN (Inteligencia Emocional).
 |------------|----------------|--------|
 | Frontend   | Northflank Static | Gratis |
 | Backend    | Northflank Docker | Gratis |
-| MongoDB    | MongoDB Atlas  | Gratis (M0, 512MB) |
+| MongoDB    | Northflank Addon | Según plan |
 | Seeder     | CLI manual     | -      |
 
-## Paso 1 — MongoDB Atlas (base de datos)
+## Paso 1 — Base de datos (Northflank Addon)
 
-1. Ir a [cloud.mongodb.com](https://cloud.mongodb.com)
-2. Crear cuenta gratuita
-3. **Build a Database** → **Shared** (M0, gratis)
-4. Elegir region mas cercana
-5. Crear usuario y contrasena de base de datos
-6. En **Network Access** → **Add IP Address** → **Allow Access from Anywhere** (`0.0.0.0/0`)
-7. En **Database** → **Connect** → **Connect your application**
-8. Copiar la URI de conexion. Queda algo asi:
-   ```
-   mongodb+srv://usuario:contrasena@cluster0.xxxxx.mongodb.net/ien?retryWrites=true&w=majority
-   ```
-9. Reemplazar `xxxxxxxx` con el nombre de la DB: `/ien`
+1. En el proyecto Northflank → **Add-ons** → **Add Add-on**
+2. Seleccionar **MongoDB**
+3. Elegir plan (dev o producción según necesidad)
+4. Una vez creado, el addon inyecta automáticamente la variable `MONGO_URI` en los servicios vinculados
+5. Si necesitás la URI fuera de Northflank, la encontrás en **Add-ons** → tu addon → **Credentials**
 
 ## Paso 2 — Northflank (backend + frontend)
 
@@ -57,7 +50,7 @@ Variables de entorno:
 
 | Variable | Valor |
 |----------|-------|
-| `MONGO_URI` | URI de MongoDB Atlas |
+| `MONGO_URI` | Inyectada automáticamente por el addon (no requiere configurarla manualmente) |
 | `NODE_ENV` | `production` |
 | `JWT_SECRET` | `openssl rand -hex 32` |
 | `CRON_API_KEY` | `openssl rand -hex 32` |
@@ -142,7 +135,7 @@ sh -c 'curl -sS -X POST -H "X-API-KEY: $CRON_API_KEY" $BACKEND_URL/api/jobs/run-
 ## Notas importantes
 
 - **Free tier**: Northflank da 2 servicios gratis + static sites. Este proyecto usa 1 Docker (backend) + 1 Static (frontend)
-- **MongoDB Atlas free**: Se borra tras 30 dias sin uso. Mantenerlo activo
+- **MongoDB Addon**: La base de datos se gestiona desde el addon de Northflank. No requiere configuración manual de URIs ni IP whitelist
 - **Auto-deploy**: Northflank puede configurarse para desplegar automaticamente en cada push
 
 ## Testing local

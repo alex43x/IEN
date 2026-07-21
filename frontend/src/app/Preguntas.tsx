@@ -206,8 +206,8 @@ export default function Preguntas() {
           </h2>
 
           {/* Scale Answer input (1 to 5) */}
-          <div className="bg-card rounded-2xl border border-border p-6">
-            <div className="flex gap-2 justify-between mb-4">
+          <div className="bg-card rounded-2xl border border-border p-4 md:p-6">
+            <div className="flex gap-1.5 md:gap-2 justify-between mb-4">
               {[1, 2, 3, 4, 5].map((val) => {
                 const selected = answer === val;
                 return (

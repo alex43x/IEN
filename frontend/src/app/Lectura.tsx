@@ -290,8 +290,8 @@ export default function Lectura() {
                       <div className="flex-1 pt-1.5">
                         <p className="text-sm font-medium text-foreground mb-2">{campo.etiqueta}</p>
                         {campo.tipo === 'escala' && (
-                          <div className="bg-background rounded-xl p-4">
-                            <div className="flex gap-1.5 justify-between mb-3">
+                          <div className="bg-background rounded-xl p-2 md:p-4">
+                            <div className="grid grid-cols-5 gap-2 md:grid-cols-10 md:gap-1.5 justify-items-center mb-3">
                               {Array.from({ length: (campo.max ?? 10) - (campo.min ?? 1) + 1 }, (_, i) => (campo.min ?? 1) + i).map((val) => {
                                 const selected = answers[campo.id] === val;
                                 return (
@@ -299,7 +299,7 @@ export default function Lectura() {
                                     key={val}
                                     type="button"
                                     onClick={() => setAnswer(campo.id, val)}
-                                    className="flex-1 aspect-square rounded-xl font-mono font-semibold text-sm transition-all hover:scale-105"
+                                    className="w-full aspect-square max-w-[52px] rounded-xl font-mono font-semibold text-sm transition-all hover:scale-105"
                                     style={{
                                       backgroundColor: selected ? tone.color : tone.bg,
                                       color: selected ? 'var(--background)' : tone.color,
@@ -310,7 +310,7 @@ export default function Lectura() {
                                 );
                               })}
                             </div>
-
+                            <p className="text-xs text-muted-foreground text-center">Selecciona una opción</p>
                           </div>
                         )}
                         {campo.tipo === 'texto' && (

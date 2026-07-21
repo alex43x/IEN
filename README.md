@@ -99,7 +99,41 @@ Una vez desplegado el frontend, volver al backend y actualizar `FRONTEND_URL` co
 4. Verificar que diga "Seed completado" o similar
 5. **Importante**: Esto solo se ejecuta una vez
 
-## Paso 4 — Verificar
+## Paso 5 — Cron Jobs (Northflank)
+
+Configurar 2 cron jobs en **Cron Jobs** → **Create new job**:
+
+| Job | Horario (UTC) | Endpoint | Descripción |
+|-----|:-------------:|----------|-------------|
+| `ien-reminders` | `0 13 * * *` | `POST /api/jobs/send-reminders` | Recordatorio matutino (10:00 PY) a usuarios que no completaron el día anterior |
+| `ien-daily` | `0 3 * * *` | `POST /api/jobs/run-daily` | Tareas nocturnas (00:00 PY): reset de rachas + nudges de activación + emails de recuperación |
+
+Ambos cron jobs comparten estas variables de entorno:
+
+| Variable | Valor |
+|----------|-------|
+| `CRON_API_KEY` | Misma que la del backend |
+| `BACKEND_URL` | `https://TU_BACKEND_URL.northflank.app` |
+
+**Source**: External image → `docker.io/curlimages/curl:latest`
+
+**CMD override**:
+```
+sh -c 'curl -sS -X POST -H "X-API-KEY: $CRON_API_KEY" $BACKEND_URL/api/jobs/run-daily'
+```
+(Cambiar `run-daily` por `send-reminders` según el job.)
+
+**Endpoints disponibles** (protegidos con `X-API-KEY`):
+
+| Método | Ruta | Uso |
+|--------|------|-----|
+| `POST` | `/api/jobs/run-daily` | Cron `ien-daily` (00:00 PY) |
+| `POST` | `/api/jobs/send-reminders` | Cron `ien-reminders` (10:00 PY) |
+| `POST` | `/api/jobs/reset-streaks` | Manual / respaldo |
+| `POST` | `/api/jobs/send-activation-nudge` | Manual / respaldo |
+| `POST` | `/api/jobs/send-recovery` | Manual / respaldo |
+
+## Paso 6 — Verificar
 
 1. Abrir la URL del frontend
 2. Ir a `/login`

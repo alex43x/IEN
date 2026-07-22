@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { ChevronLeft, ChevronRight, Search, Users } from "lucide-react";
 import { adminService } from "../services/admin.service";
 import type { PaginacionPacientes } from "../types/api.types";
-import { C } from "../constants/colors";
+import { C, GRAY } from "../constants/colors";
 
 export default function AdminPatients() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function AdminPatients() {
     if (plan?.estado === "activo" && plan.en_riesgo) return { bg: C.red.bg, text: C.red.text, label: "En riesgo" };
     if (plan?.estado === "activo") return { bg: C.green.bg, text: C.green.text, label: "Activo" };
     if (plan?.estado === "completado") return { bg: C.yellow.bg, text: C.yellow.text, label: "Completado" };
-    if (plan?.estado === "abandonado") return { bg: C.red.bg, text: C.red.text, label: "Abandonado" };
+    if (plan?.estado === "abandonado") return { bg: GRAY.light, text: GRAY.base, label: "Abandonado" };
     return { bg: C.red.bg, text: C.red.text, label: "Sin plan" };
   };
 

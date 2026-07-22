@@ -145,12 +145,12 @@ export const adminService = {
     return response.data;
   },
 
-  crearProducto: async (data: { nombre: string; descripcion?: string; tiendas: string[] }) => {
+  crearProducto: async (data: { nombre: string; descripcion?: string; tienda_id: string }) => {
     const response = await api.post<ProductoAdmin>('/admin/productos', data);
     return response.data;
   },
 
-  actualizarProducto: async (id: string, data: { nombre?: string; descripcion?: string; tiendas?: string[] }) => {
+  actualizarProducto: async (id: string, data: { nombre?: string; descripcion?: string; tienda_id?: string }) => {
     const response = await api.put<ProductoAdmin>(`/admin/productos/${id}`, data);
     return response.data;
   },

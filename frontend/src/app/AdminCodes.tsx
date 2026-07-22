@@ -112,7 +112,7 @@ export default function AdminCodes() {
                 <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">Sucursal</label>
                 <select
                   value={form.tienda_id}
-                  onChange={(e) => setForm({ ...form, tienda_id: e.target.value })}
+                  onChange={(e) => setForm({ ...form, tienda_id: e.target.value, producto_id: "" })}
                   className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15"
                 >
                   <option value="">Seleccionar sucursal</option>
@@ -129,7 +129,10 @@ export default function AdminCodes() {
                   className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15"
                 >
                   <option value="">Seleccionar producto</option>
-                  {products.map((p) => (
+                  {products.filter(p => {
+                    const tid = typeof p.tienda_id === "string" ? p.tienda_id : p.tienda_id?._id;
+                    return tid === form.tienda_id;
+                  }).map((p) => (
                     <option key={p._id} value={p._id}>{p.nombre}</option>
                   ))}
                 </select>

@@ -224,7 +224,7 @@ export interface ProductoAdmin {
   _id: string;
   nombre: string;
   descripcion?: string;
-  tiendas?: string[] | TiendaDocument[];
+  tienda_id?: string | TiendaDocument;
 }
 
 export interface CodigoActivacion {

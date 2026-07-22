@@ -9,7 +9,7 @@ export default function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<ProductoAdmin | null>(null);
-  const [form, setForm] = useState({ nombre: "", descripcion: "", tiendas: [] as string[] });
+  const [form, setForm] = useState({ nombre: "", descripcion: "", tienda_id: "" });
 
   const fetchData = async () => {
     try {
@@ -37,7 +37,7 @@ export default function AdminProducts() {
       }
       setShowForm(false);
       setEditing(null);
-      setForm({ nombre: "", descripcion: "", tiendas: [] });
+      setForm({ nombre: "", descripcion: "", tienda_id: "" });
       await fetchData();
     } catch (err) {
       console.error("Error saving product", err);
@@ -45,11 +45,11 @@ export default function AdminProducts() {
   };
 
   const handleEdit = (product: ProductoAdmin) => {
-    const tiendas = Array.isArray(product.tiendas)
-      ? product.tiendas.map((t: any) => (typeof t === "string" ? t : t._id))
-      : [];
+    const tienda = product.tienda_id
+      ? (typeof product.tienda_id === "string" ? product.tienda_id : product.tienda_id._id)
+      : "";
     setEditing(product);
-    setForm({ nombre: product.nombre, descripcion: product.descripcion || "", tiendas });
+    setForm({ nombre: product.nombre, descripcion: product.descripcion || "", tienda_id: tienda });
     setShowForm(true);
   };
 
@@ -61,13 +61,6 @@ export default function AdminProducts() {
     } catch (err) {
       console.error("Error deleting product", err);
     }
-  };
-
-  const toggleTienda = (id: string) => {
-    setForm((f) => ({
-      ...f,
-      tiendas: f.tiendas.includes(id) ? f.tiendas.filter((t) => t !== id) : [...f.tiendas, id],
-    }));
   };
 
   if (loading) {
@@ -87,7 +80,7 @@ export default function AdminProducts() {
           <p className="text-sm text-muted-foreground mt-1">{products.length} productos registrados</p>
         </div>
         <button
-          onClick={() => { setEditing(null); setForm({ nombre: "", descripcion: "", tiendas: [] }); setShowForm(true); }}
+          onClick={() => { setEditing(null); setForm({ nombre: "", descripcion: "", tienda_id: "" }); setShowForm(true); }}
           className="flex items-center gap-2 rounded-2xl bg-foreground px-5 py-3 text-sm font-semibold text-background hover:opacity-90 transition-all"
         >
           <Plus size={16} />
@@ -113,16 +106,17 @@ export default function AdminProducts() {
                   placeholder="Descripción opcional" rows={3} />
               </div>
               <div>
-                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">Sucursales</label>
-                <div className="space-y-2 max-h-40 overflow-y-auto">
+                <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground">Sucursal</label>
+                <select
+                  value={form.tienda_id}
+                  onChange={(e) => setForm({ ...form, tienda_id: e.target.value })}
+                  className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15"
+                >
+                  <option value="">Seleccionar sucursal</option>
                   {stores.map((s) => (
-                    <label key={s._id} className="flex items-center gap-3 p-2 rounded-xl hover:bg-background cursor-pointer">
-                      <input type="checkbox" checked={form.tiendas.includes(s._id)} onChange={() => toggleTienda(s._id)}
-                        className="w-4 h-4 rounded border-border text-accent focus:ring-accent" />
-                      <span className="text-sm text-foreground">{s.nombre_tienda}</span>
-                    </label>
+                    <option key={s._id} value={s._id}>{s.nombre_tienda}</option>
                   ))}
-                </div>
+                </select>
               </div>
               <div className="flex items-center gap-3 pt-2">
                 <button onClick={() => setShowForm(false)} className="flex-1 rounded-2xl border border-border px-4 py-3 text-sm font-semibold text-muted-foreground hover:bg-secondary transition-all">Cancelar</button>
@@ -137,9 +131,9 @@ export default function AdminProducts() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((product) => {
-          const tiendasNombres = Array.isArray(product.tiendas)
-            ? product.tiendas.map((t: any) => (typeof t === "string" ? t : t.nombre_tienda)).filter(Boolean)
-            : [];
+          const tiendaNombre = product.tienda_id
+            ? (typeof product.tienda_id === "string" ? null : product.tienda_id.nombre_tienda)
+            : null;
           return (
             <div key={product._id} className="bg-card rounded-3xl border border-border p-5 hover:shadow-sm transition-shadow">
               <div className="flex items-start justify-between">
@@ -157,11 +151,9 @@ export default function AdminProducts() {
               </div>
               <h3 className="mt-4 font-semibold text-foreground">{product.nombre}</h3>
               {product.descripcion && <p className="mt-1 text-sm text-muted-foreground">{product.descripcion}</p>}
-              {tiendasNombres.length > 0 && (
+              {tiendaNombre && (
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {tiendasNombres.map((name: string, i: number) => (
-                    <span key={i} className="rounded-full bg-secondary px-2.5 py-1 text-[10px] font-medium text-muted-foreground">{name}</span>
-                  ))}
+                  <span className="rounded-full bg-secondary px-2.5 py-1 text-[10px] font-medium text-muted-foreground">{tiendaNombre}</span>
                 </div>
               )}
             </div>

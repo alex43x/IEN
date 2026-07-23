@@ -239,6 +239,26 @@ export default function Dashboard() {
         <button
           onClick={async () => {
             try {
+              await planService.retreatDay();
+              const [todayPlan, profileData] = await Promise.all([
+                planService.getTodayPlan(),
+                planService.getProfile()
+              ]);
+              setLeccion(todayPlan.leccion);
+              setProfile(profileData);
+              setHitoAlcanzado(null);
+            } catch (error) {
+              console.error("Error retreating day:", error);
+            }
+          }}
+          title="Retroceder día"
+          className="flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all"
+        >
+          RETROCEDER
+        </button>
+        <button
+          onClick={async () => {
+            try {
               await planService.advanceDay();
               const [todayPlan, profileData] = await Promise.all([
                 planService.getTodayPlan(),

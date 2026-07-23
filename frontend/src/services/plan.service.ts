@@ -41,6 +41,11 @@ export const planService = {
     return response.data;
   },
 
+  retreatDay: async () => {
+    const response = await api.post<CompleteDayResponse>('/plan/testing/retreat');
+    return response.data;
+  },
+
   autocompleteTest: async (debiles?: string[]) => {
     const params = debiles?.length ? { debiles: debiles.join(',') } : {};
     const response = await api.post<SetupTestResponse>('/plan/testing/autocomplete-test', {}, { params });

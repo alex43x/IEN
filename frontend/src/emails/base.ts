@@ -106,10 +106,34 @@ export function muted(text: string) {
   return `<p style="margin:0 0 16px;font-family:${FONT.inter};font-size:13px;color:${C.muted};line-height:1.7;">${text}</p>`;
 }
 
-export function signoff() {
+export function signoff(tienda?: string) {
   return `
   <p style="margin:0;font-family:${FONT.inter};font-size:15px;color:${C.text};line-height:1.7;">
     Con cariño,<br/>
-    <span style="font-weight:500;">Equipo IEN</span>
+    <span style="font-weight:500;">Equipo IEN${tienda ? ' · ' + tienda : ''}</span>
   </p>`;
+}
+
+export function brandFooter() {
+  const base = typeof window !== 'undefined' ? '' : 'https://ien.app';
+  return `
+  <tr>
+    <td style="padding:16px 32px 8px;background:${C.white};">
+      <p style="margin:0 0 12px;font-family:${FONT.mono};font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:${C.muted};text-align:center;font-weight:500;">Con el apoyo de</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center" style="padding-bottom:8px;">
+            <img src="${base}/imports/cardiosmile.jpeg" alt="Cardiosmile" style="height:60px;width:auto;border-radius:12px;display:inline-block;" />
+            <div style="display:inline-block;width:1px;height:48px;background:${C.border};margin:0 20px;vertical-align:middle;"></div>
+            <img src="${base}/imports/vitamin_shoppe.jpeg" alt="Vitamin Shoppe" style="height:60px;width:auto;border-radius:12px;display:inline-block;" />
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:8px 32px 24px;background:${C.white};border-radius:0 0 16px 16px;border-top:1px solid ${C.border};">
+      <p style="margin:0;font-family:${FONT.inter};font-size:12px;color:${C.muted};text-align:center;font-weight:400;">Cuidamos de tu mente y de tu corazón</p>
+    </td>
+  </tr>`;
 }

@@ -1,37 +1,27 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router";
-import { ArrowRight, Scan, ChevronLeft, Loader2 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { ArrowRight, Scan, ChevronLeft } from "lucide-react";
 import { ThemeToggle } from "../components/ui/ThemeToggle";
 import CodeInput from "../components/CodeInput";
 
 export default function Activar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { register } = useAuth();
   const regData = (location.state as { nombre?: string; email?: string; password?: string }) || {};
   const [codigoActivacion, setCodigoActivacion] = useState("");
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
 
   const canContinue = codigoActivacion.length === 7 && (regData.nombre && regData.email && regData.password);
 
-  const handleSubmit = async () => {
-    if (!canContinue || submitting) return;
-    setSubmitting(true);
-    setError("");
-    try {
-      await register({
+  const handleSubmit = () => {
+    if (!canContinue) return;
+    navigate("/horario", {
+      state: {
         nombre: regData.nombre,
         email: regData.email,
         password: regData.password,
-        codigo_activacion: codigoActivacion.toUpperCase()
-      });
-      navigate("/bienvenida");
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Error al crear la cuenta.");
-      setSubmitting(false);
-    }
+        codigo_activacion: codigoActivacion.toUpperCase(),
+      },
+    });
   };
 
   return (
@@ -58,7 +48,7 @@ export default function Activar() {
         <div className="max-w-lg w-full">
 
           <div className="mb-8">
-            <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">Paso 2 de 2</p>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">Paso 2 de 3</p>
             <h1 className="font-['Lora'] text-2xl font-semibold text-foreground">Activa tus productos</h1>
             <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
               Introduce el código de activación que recibiste para comenzar el programa.
@@ -74,9 +64,7 @@ export default function Activar() {
               <p className="text-sm font-semibold text-foreground">Código de activación</p>
             </div>
             <CodeInput
-              onChange={(v) => { setCodigoActivacion(v); setError(""); }}
-              disabled={submitting}
-              error={!!error}
+              onChange={(v) => setCodigoActivacion(v)}
             />
             <div className="mt-4 flex items-center justify-center gap-6 text-[10px] text-muted-foreground">
               <span className="flex items-center gap-1"><span className="font-mono font-bold">ABC</span> letras</span>
@@ -87,24 +75,13 @@ export default function Activar() {
 
           {/* Continue */}
           <button
-            disabled={!canContinue || submitting}
+            disabled={!canContinue}
             onClick={handleSubmit}
             className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-semibold text-primary-foreground bg-foreground transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {submitting ? (
-              <Loader2 size={16} className="animate-spin" />
-            ) : (
-              <>
-                Comenzar el programa
-                <ArrowRight size={16} />
-              </>
-            )}
+            Siguiente
+            <ArrowRight size={16} />
           </button>
-          {error && (
-            <p className="text-center text-xs font-medium text-destructive mt-2">
-              {error}
-            </p>
-          )}
         </div>
       </div>
     </div>

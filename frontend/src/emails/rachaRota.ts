@@ -1,4 +1,4 @@
-import { wrap, header, footer, card, spacer, label, heading, para, btn, C } from "./base";
+import { wrap, header, brandFooter, card, spacer, label, heading, para, btn, C } from "./base";
 
 export const rachaRota = (nombre: string, racha: number) => wrap(`
   ${header()}
@@ -11,5 +11,5 @@ export const rachaRota = (nombre: string, racha: number) => wrap(`
     ${btn("Volver a empezar hoy", "https://ien.app/dashboard", C.teal)}
   `, C.red)}
   ${spacer()}
-  ${footer()}
+  ${brandFooter()}
 `);

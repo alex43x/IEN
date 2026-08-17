@@ -1,4 +1,4 @@
-import { wrap, header, footer, card, spacer, label, heading, para, btn, C } from "./base";
+import { wrap, header, brandFooter, card, spacer, label, heading, para, btn, C } from "./base";
 
 export const recordatorioDiario = (nombre: string, dia: number) => wrap(`
   ${header()}
@@ -11,5 +11,5 @@ export const recordatorioDiario = (nombre: string, dia: number) => wrap(`
     ${btn("Completar ahora", "https://ien.app/dashboard", C.gold)}
   `, C.gold)}
   ${spacer()}
-  ${footer()}
+  ${brandFooter()}
 `);

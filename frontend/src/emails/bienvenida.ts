@@ -1,4 +1,4 @@
-import { wrap, header, footer, card, spacer, label, heading, para, signoff, C } from "./base";
+import { wrap, header, brandFooter, card, spacer, label, heading, para, signoff, C } from "./base";
 
 function competencia(nombre: string, desc: string, bg: string) {
   return `
@@ -19,14 +19,14 @@ function competencia(nombre: string, desc: string, bg: string) {
   </tr>`;
 }
 
-export const bienvenida = (nombre: string) => wrap(`
+export const bienvenida = (nombre: string, tienda: string) => wrap(`
   ${header()}
   ${card(`
     ${label("Día 0", C.gold)}
     ${heading("Tu mente y tu corazón inician un viaje integral hoy")}
     ${para(`Hola, <strong>${nombre}</strong>,`)}
+    ${para(`Gracias por activar tu programa en <strong>${tienda}</strong>.`)}
     ${para(`Bienvenido/a a <strong>"Cuidamos de tu mente y de tu corazón"</strong>. Estamos muy felices de que hayas decidido dar este paso hacia una salud integral.`)}
-    ${para(`Probablemente, en el pasado has intentado "hacer dieta" o "ir al gimnasio" enfocándote solo en el esfuerzo físico. Pero la salud integral conlleva que el bienestar es un equilibrio: se trata de lo que comes, cómo te mueves, cómo descansas y, sobre todo, de cómo te relacionas contigo mismo/a y con los demás.`)}
     ${para(`Durante los próximos 30 días, con 5 a 10 min al día, vamos a trabajar el eslabón perdido de la vitalidad: la <strong>Inteligencia Emocional aplicada a la salud</strong>.`)}
   `, C.gold)}
   ${spacer(8)}
@@ -43,14 +43,8 @@ export const bienvenida = (nombre: string) => wrap(`
   `, C.teal)}
   ${spacer(8)}
   ${card(`
-    <p style="margin:0 0 12px;font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:500;color:${C.text};">Tus Aliados en el Camino</p>
-    ${para(`Este viaje es más sencillo con las herramientas adecuadas. Contamos con el apoyo de <strong>Cardiosmile</strong>, para proteger tu salud cardiovascular mientras trabajas tus emociones, y <strong>Vitamin Shoppe</strong>, para brindarte el combustible y bienestar integral que tu organismo necesita para funcionar al máximo.`)}
-  `, C.gold)}
-  ${spacer(8)}
-  ${card(`
-    ${para(`Mañana recibirás el <strong>Bloque 1: Autoconciencia</strong>. Prepárate para descubrir lo que tu cuerpo realmente intenta decirte.`)}
-    ${signoff()}
+    ${signoff(tienda)}
   `, C.teal)}
   ${spacer()}
-  ${footer()}
+  ${brandFooter()}
 `);

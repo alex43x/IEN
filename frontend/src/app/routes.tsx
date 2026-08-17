@@ -14,6 +14,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Bienvenida from "./Bienvenida";
 import Activar from "./Activar";
+import Horario from "./Horario";
 import Lectura from "./Lectura";
 import BloqueIntro from "./BloqueIntro";
 import Preguntas from "./Preguntas";
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
     ],
   },
   { path: "/activar", element: <Activar /> },
+  { path: "/horario", element: <Horario /> },
   {
     element: <ProtectedRoute />,
     children: [

@@ -1,4 +1,4 @@
-import { wrap, header, footer, card, spacer, label, heading, para, btn, muted, C } from "./base";
+import { wrap, header, brandFooter, card, spacer, label, heading, para, btn, muted, C } from "./base";
 
 export const recuperacionContrasena = (nombre: string, resetUrl: string) => wrap(`
   ${header()}
@@ -12,5 +12,5 @@ export const recuperacionContrasena = (nombre: string, resetUrl: string) => wrap
     ${muted("Si no solicitaste este cambio, podés ignorar este mensaje. Tu contraseña permanecerá igual.")}
   `, C.red)}
   ${spacer()}
-  ${footer()}
+  ${brandFooter()}
 `);

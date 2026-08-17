@@ -1,4 +1,4 @@
-import { wrap, header, footer, card, spacer, label, heading, para, signoff, C } from "./base";
+import { wrap, header, brandFooter, card, spacer, label, heading, para, signoff, C } from "./base";
 
 const HITOS: Record<number, { titulo: string; competencia: string; cuerpo: string; accent: string }> = {
   7: {
@@ -27,7 +27,7 @@ const HITOS: Record<number, { titulo: string; competencia: string; cuerpo: strin
   },
 };
 
-export const hito = (nombre: string, dia: number) => {
+export const hito = (nombre: string, dia: number, tienda?: string) => {
   const h = HITOS[dia] || HITOS[7];
 
   return wrap(`
@@ -37,9 +37,9 @@ export const hito = (nombre: string, dia: number) => {
       ${heading(h.titulo)}
       ${para(`Hola, <strong>${nombre}</strong>,`)}
       ${para(h.cuerpo)}
-      ${signoff()}
+      ${signoff(tienda || undefined)}
     `, h.accent)}
     ${spacer()}
-    ${footer()}
+    ${brandFooter()}
   `);
 };

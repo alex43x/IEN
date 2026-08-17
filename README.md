@@ -98,7 +98,7 @@ Configurar 2 cron jobs en **Cron Jobs** → **Create new job**:
 
 | Job | Horario (UTC) | Endpoint | Descripción |
 |-----|:-------------:|----------|-------------|
-| `ien-reminders` | `0 13 * * *` | `POST /api/jobs/send-reminders` | Recordatorio matutino (10:00 PY) a usuarios que no completaron el día anterior |
+| `ien-reminders` | `*/30 * * * *` | `POST /api/jobs/send-reminders` | Recordatorio diario (cada 30 min) a usuarios rezagados en su horario configurado |
 | `ien-daily` | `0 3 * * *` | `POST /api/jobs/run-daily` | Tareas nocturnas (00:00 PY): reset de rachas + nudges de activación + emails de recuperación |
 
 Ambos cron jobs comparten estas variables de entorno:
